@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "prestart": "npm run build"
+    "start": "node dist/main.js",
+    "dev": "ts-node src/main.ts"
   },
   "repository": {
     "type": "git",
@@ -27,6 +26,7 @@
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.30",
+    "@types/sequelize": "^4.28.20",
     "bcrypt": "^6.0.0",
     "csv-parser": "^3.2.0",
     "dotenv": "^16.5.0",
@@ -37,7 +37,6 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@types/sequelize": "^4.28.20",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.3"
