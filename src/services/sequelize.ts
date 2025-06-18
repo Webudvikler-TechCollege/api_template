@@ -1,20 +1,10 @@
 // Import af dependencies
 import { Sequelize } from 'sequelize'
-import dotenv from 'dotenv'
+import { config } from '../config/env'
 
-// Giver adgang til variabler fra en .env-fil via process.env
-dotenv.config()
-
-const { DBNAME, DBUSER, DBPASSWD, DBHOST, DBPORT } = process.env
-
-// Kast fejl hvis nødvendige variabler mangler
-if (!DBNAME || !DBUSER || !DBPASSWD || !DBHOST || !DBPORT) {
-  throw new Error('Missing required database environment variables');
-}
-
-const sequelize = new Sequelize(DBNAME, DBUSER, DBPASSWD, {
-	host: DBHOST,
-	port: parseInt(DBPORT),
+const sequelize = new Sequelize(config.db.name, config.db.user, config.db.password, {
+	host: config.db.host,
+	port: config.db.port,
 	dialect: 'mysql',
 	define: {
 		charset: "utf8mb4",

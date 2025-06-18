@@ -1,25 +1,20 @@
-import express from "express";
-import sequelize from "../services/sequelize";
 import type { Request, Response } from "express";
-import User from "../models/userModel";
+import sequelize from "../services/sequelize";
+import { User } from "../models";
 import { seedFromCsv } from "../services/seed";
 
-export const dataController = express.Router();
-
-const url:string = 'users';
-
 // Test database connection
-dataController.get('/test', async (req: Request, res: Response) => {	
+export const test = async (req: Request, res: Response) => {
     try {
         await sequelize.authenticate();
         res.status(200).send({ message: 'Database connection successful'})
     } catch (error: any) {
         res.status(500).json({ message: `Error updating song: ${error.message}` });
     }
-});
+}
 
 // Synchronize database tables
-dataController.get('/sync', async (req, res) => {
+export const sync = async (req: Request, res: Response) => {
     try {
         const forceSync = req.query.force === 'true';
         await sequelize.sync({ force: forceSync });
@@ -27,10 +22,10 @@ dataController.get('/sync', async (req, res) => {
     } catch (error: any) {
         res.status(500).json({ message: `Error updating song: ${error.message}` });        
     }
-});
+}
 
-// Seed database from CSV files
-dataController.get('/seedfromcsv', async (req: Request, res: Response) => {
+// Synchronize database tables
+export const seed = async (req: Request, res: Response) => {
     try {
         // Array med seed filer og models
         const files_to_seed = [
@@ -50,4 +45,6 @@ dataController.get('/seedfromcsv', async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(500).json({ message: `Error updating song: ${error.message}` });        
     }
-});
+}
+
+

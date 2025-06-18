@@ -1,13 +1,7 @@
-import express from "express";
 import type { Request, Response } from "express";
 import { User } from "../models/index";
-import { Authorize } from "../services/auth";
 
-export const userController = express.Router();
-
-const url: string = 'users';
-
-userController.get(`/${url}`, Authorize, async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
     try {
         const data = await User.findAll({
             attributes: ['id', 'firstname', 'lastname', 'email', 'createdAt']
@@ -19,9 +13,9 @@ userController.get(`/${url}`, Authorize, async (req: Request, res: Response) => 
     } catch (error: any) {
         res.status(500).json({ message: `Error fetching Users: ${error.message}` });
     }
-});
+}
 
-userController.get(`/${url}/:id`, Authorize, async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
         res.status(400).json({ message: "Invalid User ID" });
@@ -40,9 +34,9 @@ userController.get(`/${url}/:id`, Authorize, async (req: Request, res: Response)
     catch (error: any) {
         res.status(500).json({ message: `Error fetching User: ${error.message}` });
     }
-});
+}
 
-userController.post(`/${url}`, Authorize, async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
     const { firstname, lastname, email, password, refresh_token, is_active } = req.body;
     try {
         const newData = await User.create({ firstname, lastname, email, password, refresh_token, is_active });
@@ -50,9 +44,9 @@ userController.post(`/${url}`, Authorize, async (req: Request, res: Response) =>
     } catch (error: any) {
         res.status(500).json({ message: `Error creating User: ${error.message}` });
     }
-});
+}
 
-userController.put(`/${url}/:id`, Authorize, async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
         res.status(400).json({ message: "Invalid User ID" });
@@ -72,9 +66,9 @@ userController.put(`/${url}/:id`, Authorize, async (req: Request, res: Response)
     } catch (error: any) {
         res.status(500).json({ message: `Error updating User: ${error.message}` });
     }
-});
+}
 
-userController.patch(`/${url}/:id`, Authorize, async (req: Request, res: Response) => {
+export const updateUserPassword = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id, 10);
 
     if (isNaN(id)) {
@@ -86,7 +80,7 @@ userController.patch(`/${url}/:id`, Authorize, async (req: Request, res: Respons
         // Validate password exists
         if (!password) {
             res.status(400).json({ message: "Password is required" });
-        }        
+        }
         // Optional: Validate password confirmation
         if (confirmPassword && password !== confirmPassword) {
             res.status(400).json({ message: "Passwords do not match" });
@@ -94,7 +88,7 @@ userController.patch(`/${url}/:id`, Authorize, async (req: Request, res: Respons
 
         // Update record 
         const [updated] = await User.update({ password }, {
-            where: { id }, 
+            where: { id },
             individualHooks: true // Åbner for hooks i modellen
         });
         if (!updated) {
@@ -104,9 +98,12 @@ userController.patch(`/${url}/:id`, Authorize, async (req: Request, res: Respons
     } catch (error: any) {
         res.status(500).json({ message: `Error updating User: ${error.message}` });
     }
-});
 
-userController.delete(`/${url}/:id`, Authorize, async (req: Request, res: Response) => {
+}
+
+export const deleteUser = async (req: Request, res: Response) => {
+    console.log(122);
+    
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
         res.status(400).json({ message: "Invalid User ID" });
@@ -121,4 +118,4 @@ userController.delete(`/${url}/:id`, Authorize, async (req: Request, res: Respon
     } catch (error: any) {
         res.status(500).json({ message: `Error deleting User: ${error.message}` });
     }
-});
+}
