@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send('API Template');
 });
 
 app.use("/api/users", userRouter)
